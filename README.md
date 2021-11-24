@@ -1,1 +1,1 @@
-# Health_data_project
+# Drinking Prediction Model with Health Data
