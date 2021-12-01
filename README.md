@@ -113,8 +113,7 @@ clf_xg.fit(X_train, y_train);
 #### Confusion Matrix 확인
 ![initial](https://user-images.githubusercontent.com/83389640/144187159-6e685fed-43b1-491a-a7b4-efdee5ac0635.png)
 
-(세로 : True label , 가로 : Predict label )
-
+### Model 성능
 |model|RandomForest(Before)|RandomForest(After)|XGboost(Before)|XGboost(After)|
 |:-----|:---------|:--------|:--------|:----------|
 |f1_score|69.827|72.7781|72.9101|73.1569|
