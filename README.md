@@ -47,6 +47,26 @@ if 'google.colab' in sys.modules:
 
 ### 4. Modeling(Randomforestclassifier, XGBClassifier)
 * make_pipeline 임의값 설정 후 model fit
+```python
+RandomForest
+pipe_rf = make_pipeline(
+    RandomForestClassifier(n_jobs=-1, 
+                           max_depth= 2,
+                           min_samples_split=2,
+                           min_samples_leaf= 10,
+                           random_state=2)
+)
+
+XGboost
+pipe_xg = make_pipeline(
+    XGBClassifier(max_depth=2,
+                  random_state=10,
+                  min_samples_split=2,
+                  min_samples_leaf= 10,
+                  n_jobs=-1) 
+
+)
+```
 
 ### 5. 모델 성능 향상을 위한 Hyperparameter Tunning
 ```python
