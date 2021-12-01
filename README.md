@@ -40,7 +40,8 @@ if 'google.colab' in sys.modules:
 * describe로 이상치 확인 => 상위 1% 제거
 
 ### 2. Data Visualization
-* seaborn, heatmap을 통한 feature correlation 확인
+* seaborn - 데이터 분포 확인
+* heatmap - feature correlation 확인
 
 ### 3. (Train, val, Test) split
 * Target = 'alcohol', 데이터 split
