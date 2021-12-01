@@ -117,9 +117,10 @@ clf_xg.fit(X_train, y_train);
 * 예측 확률 임계치 0.5 으로 설정( Right, Wrong 구분 )
 
 ## SHAP Visualization
+**index로 접근했기 때문에 number + 1 = 환자번호**
 #### 예측성공
 * True Positive - 술을 마시며 마신다고 예측 = 91%
-* True Negative - 술을 마시지 않으며 마시지 않는다고 예측 = 87&
+* True Negative - 술을 마시지 않으며 마시지 않는다고 예측 = 87%
 ![initial](https://user-images.githubusercontent.com/83389640/144185757-731d1ac0-967c-4cf1-92f9-aef6a2b4c8a6.png)
 #### 예측실패
 * False Negative - 술을 마시지만 마시지 않는다고 예측 = 67%
