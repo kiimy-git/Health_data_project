@@ -43,7 +43,7 @@ if 'google.colab' in sys.modules:
 * seaborn, heatmap을 통한 feature correlation 확인
 
 ### 3. (Train, Test) split
-* Target column (alcohol), 데이터 
+* Target = 'alcohol', 데이터 split
 
 ### 4. Modeling(Randomforestclassifier, XGBClassifier)
 * make_pipeline 임의값 설정 후 model fit
