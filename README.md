@@ -102,6 +102,12 @@ clf_xg.fit(X_train, y_train);
 |accuracy_score|69.9617|72.0663|72.5128|72.8316|
 
 ### 6. XGboost Model 
+**Baseline Model** - 50%
+
+분류기준모델의 성능은 특성의 최빈값 비율로 설정
+
+**why?** 예측모델이 사람보다 분류를 잘한다면 의미있는 모델이 구축 됐다고 볼 수 있다.
+
 * Test data - PermutationImportance 순열중요도 확인
 * SHAP, PDP를 활용하여 예측모델 설명(PDP => ppt, ipynb 확인)
 * SHAP, PDP = Target에 대한 각 특성들의 영향
