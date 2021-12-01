@@ -32,7 +32,7 @@ if 'google.colab' in sys.modules:
 * auc_roc curve
 
 ## Train Process
-### Data Preprocessing(EDA) -> Data Visualization -> (Train, Test) split -> Modeling -> Metrics and Score -> Model Explain
+### Data Preprocessing(EDA) -> Data Visualization -> (Train, val, Test) split -> Modeling -> Metrics and Score -> Model Explain
 ### 1. Data Preprocessing
 * Data 일부만 추출(2만명)
 * 결측치가 많은 Features 제거 + 결측치 최빈값, 중간값으로 설정
@@ -42,7 +42,7 @@ if 'google.colab' in sys.modules:
 ### 2. Data Visualization
 * seaborn, heatmap을 통한 feature correlation 확인
 
-### 3. (Train, Test) split
+### 3. (Train, val, Test) split
 * Target = 'alcohol', 데이터 split
 
 ### 4. Modeling(Randomforestclassifier, XGBClassifier)
