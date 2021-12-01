@@ -108,15 +108,19 @@ clf_xg.fit(X_train, y_train);
 
 **why?** 예측모델이 사람보다 분류를 잘한다면 의미있는 모델이 구축 됐다고 볼 수 있다.
 
+### 성능이 제일 높은 XGboost 사용
 * Test data - PermutationImportance 순열중요도 확인
 * SHAP, PDP를 활용하여 예측모델 설명(PDP => ppt, ipynb 확인)
 * SHAP, PDP = Target에 대한 각 특성들의 영향
 
 ### 7. Predictive Model Explain
-* 예측값과 실제값 비교 DataFrame 형성
-* 예측 확률 임계치 0.5 으로 설정( Right, Wrong 구분 )
+
+## PermutationImportance
+![initial](https://user-images.githubusercontent.com/83389640/144193904-183dc256-f477-43e0-b6d6-59aa9d985156.png)
 
 ## SHAP Visualization
+* 예측값과 실제값 비교 DataFrame 형성
+* 예측 확률 임계치 0.5 으로 설정( Right, Wrong 구분 )
 **index로 접근했기 때문에 number + 1 = 환자번호**
 #### 예측성공
 * True Positive - 술을 마시며 마신다고 예측 = 91%
