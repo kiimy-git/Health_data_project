@@ -113,8 +113,7 @@ clf_xg = RandomizedSearchCV(
 
 clf_xg.fit(X_train, y_train);
 ```
-### 재현율에 비중을 두고 음주여부 예측 recall, f1_score
-#### Confusion Matrix 확인
+### Confusion Matrix 확인
 ![initial](https://user-images.githubusercontent.com/83389640/144187159-6e685fed-43b1-491a-a7b4-efdee5ac0635.png)
 
 ### Model 성능
