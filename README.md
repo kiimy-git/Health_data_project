@@ -137,10 +137,10 @@ clf_xg.fit(X_train, y_train);
 
 ### 7. Predictive Model Explain
 
-## PermutationImportance
+#### PermutationImportance
 ![initial](https://user-images.githubusercontent.com/83389640/144193904-183dc256-f477-43e0-b6d6-59aa9d985156.png)
 
-## SHAP Visualization
+#### SHAP Visualization
 * 예측값과 실제값 비교 DataFrame 형성
 * 예측 확률 임계치 0.5 으로 설정( Right, Wrong 구분 )
 
