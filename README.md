@@ -35,6 +35,7 @@ if 'google.colab' in sys.modules:
 ## Train Process
 ### Data Preprocessing(EDA) -> Data Visualization -> (Train, val, Test) split -> Modeling -> 
 ### Metrics and Score -> Model Explain
+...
 ### 1. Data Preprocessing
 * Data 일부만 추출(2만명)
 * 결측치가 많은 Features 제거 + 결측치 최빈값, 중간값으로 설정
