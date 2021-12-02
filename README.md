@@ -114,7 +114,7 @@ clf_xg = RandomizedSearchCV(
 clf_xg.fit(X_train, y_train);
 ```
 ### Confusion Matrix 확인
-![initial](https://user-images.githubusercontent.com/83389640/144187159-6e685fed-43b1-491a-a7b4-efdee5ac0635.png){: width="300" height="300"){: .center}
+<p align="center"><img src="https://user-images.githubusercontent.com/83389640/144187159-6e685fed-43b1-491a-a7b4-efdee5ac0635.png"></p>
 
 ### Model 성능
 |model|RandomForest(Before)|RandomForest(After)|XGboost(Before)|XGboost(After)|
@@ -137,10 +137,10 @@ clf_xg.fit(X_train, y_train);
 
 ### 7. Predictive Model Explain
 
-#### PermutationImportance
-![initial](https://user-images.githubusercontent.com/83389640/144193904-183dc256-f477-43e0-b6d6-59aa9d985156.png){: width="300" height="300"){: .center}
+#### 1) PermutationImportance
+<p align="center"><img src="https://user-images.githubusercontent.com/83389640/144193904-183dc256-f477-43e0-b6d6-59aa9d985156.png"></p>
 
-#### SHAP Visualization
+#### 2) SHAP Visualization
 * 예측값과 실제값 비교 DataFrame 형성
 * 예측 확률 임계치 0.5 으로 설정( Right, Wrong 구분 )
 
