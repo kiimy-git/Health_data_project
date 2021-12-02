@@ -142,6 +142,7 @@ clf_xg.fit(X_train, y_train);
 ## SHAP Visualization
 * 예측값과 실제값 비교 DataFrame 형성
 * 예측 확률 임계치 0.5 으로 설정( Right, Wrong 구분 )
+
 **index로 접근했기 때문에 number + 1 = 환자번호**
 #### 예측성공
 * True Positive - 술을 마시며 마신다고 예측 = 91%
