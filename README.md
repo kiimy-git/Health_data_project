@@ -125,7 +125,13 @@ clf_xg.fit(X_train, y_train);
 
 ### 6. XGboost Model 
 **Baseline Model** - 50%
-
+```python
+# 전체 데이터 기준모델 설정
+major= df[target].mode()[0]
+pred= [major] * len(df[target])
+baseline= accuracy_score(df[target], pred)
+print('baseline_accuarcy_Score=', baseline)
+```
 분류기준모델의 성능은 특성의 최빈값 비율로 설정
 
 **why?** 예측모델이 사람보다 분류를 잘한다면 의미있는 모델이 구축 됐다고 볼 수 있다.
