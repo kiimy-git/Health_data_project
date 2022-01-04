@@ -171,7 +171,8 @@ print('baseline_accuarcy_Score=', baseline)
 * XGboost
 
 ## Results
-음주여부에 가장 크게 영향을 주는 것은 성별과 흡연여부, gtp 순으로 높은 것을 확인
+* XGboost 82% 성능 모델 구현
+* 음주여부에 가장 크게 영향을 주는 것은 성별과 흡연여부, gtp 순으로 높은 것을 확인
 
 ## Reviews
 1. 더 많은 데이터를 사용했다면 더 성능이 좋은 모델을 구축할 수 있을까?
