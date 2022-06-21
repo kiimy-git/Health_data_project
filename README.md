@@ -18,6 +18,15 @@ if 'google.colab' in sys.modules:
     !pip install shap
 ```
 
+## Tools
+* Python
+* numpy
+* matplotlib, seaborn
+* sklearn
+* eli5
+* pdpbox
+* shap
+* XGboost
 
 ## Data
 건강검진 데이터(국민보험공단)
@@ -160,15 +169,6 @@ print('baseline_accuarcy_Score=', baseline)
 * False Positve - 술을 마시지 않지만 마신다고 예측 = 68%
 ![initial](https://user-images.githubusercontent.com/83389640/144185800-f7540fea-9873-44f0-946b-d02b5d5c96dc.png)
 
-## Tools
-* Python
-* numpy
-* matplotlib, seaborn
-* sklearn
-* eli5
-* pdpbox
-* shap
-* XGboost
 
 ## Results
 * XGboost 82% 성능 모델 구현
