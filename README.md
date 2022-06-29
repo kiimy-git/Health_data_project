@@ -43,7 +43,7 @@ if 'google.colab' in sys.modules:
 
 ## Process
 
-### Data Preprocessing(EDA) -> Data Visualization -> Data split -> Modeling(+Hyperparameter Tunning) -> Metrics and Score -> Model Explain > Result > Reviews
+### Data EDA -> Data split -> Modeling(+Hyperparameter Tunning) -> Metrics and Score -> Model Explain > Result > Reviews
 
 ## Data
 건강검진 데이터(국민보험공단)
@@ -51,48 +51,48 @@ if 'google.colab' in sys.modules:
 [(features explain)](https://github.com/kimmy-git/Health_data_project/blob/main/features.txt)
 ### alcohol == Target
 
-### 1. Data Preprocessing
-- 사용한 데이터
-    - 10만개의 데이터 중 2만개의 데이터만 사용(= 빠른 구현을 위함)
+### 1. Data EDA
+* Data Preprocessing
+    - 사용한 데이터
+        - 10만개의 데이터 중 2만개의 데이터만 사용(= 빠른 구현을 위함)
 
-- 결측치 처리 및 필요 없는 Feature 삭제
-    - '치아우식증유무', '결손치유무', '치아마모증유무', '제3대구치(사랑니)이상',
-      '치석', '데이터공개일자', '기준년도'
-    - 치아의 상태이 음주 여부에 중요한 특성이 될 수 있겠지만 너무 많은 결측치이기 때문에 제외
-    - '요단백', 'LDL콜레스테롤' 최빈값, 중간값 적용(= 평균치는 이상치에 영향이 있기 때문에 중간값으로 지정)
-    - 이외의 결측치는 각 feature마다 많이 존재하지 않기 때문에 제외
+    - 결측치 처리 및 필요 없는 Feature 삭제
+        - '치아우식증유무', '결손치유무', '치아마모증유무', '제3대구치(사랑니)이상',
+          '치석', '데이터공개일자', '기준년도'
+        - 치아의 상태이 음주 여부에 중요한 특성이 될 수 있겠지만 너무 많은 결측치이기 때문에 제외
+        - '요단백', 'LDL콜레스테롤' 최빈값, 중간값 적용(= 평균치는 이상치에 영향이 있기 때문에 중간값으로 지정)
+        - 이외의 결측치는 각 feature마다 많이 존재하지 않기 때문에 제외
 
-- 전처리
-    - Features 이름 변경
-    - BMI 지수 Feature 생성(= 체중 / ( (신장 / 100) ** 2 ))
-    - 시력 클래스 중 9.9 = 실명자 ==> 제외
-    - 이상치 처리(= 상위 0.1%) 
-    - => 이상치 제거 후 데이터의 구조 및 이상치 다시 확인 필요
-    - => 이상치 제거를 통해 어떤 부분을 학습 데이터로 사용할 건지에 대한 설명이 필요함
+    - 전처리
+        - Features 이름 변경
+        - BMI 지수 Feature 생성(= 체중 / ( (신장 / 100) ** 2 ))
+        - 시력 클래스 중 9.9 = 실명자 ==> 제외
+        - 이상치 처리(= 상위 0.1%) 
+        - => 이상치 제거 후 데이터의 구조 및 이상치 다시 확인 필요
+        - => 이상치 제거를 통해 어떤 부분을 학습 데이터로 사용할 건지에 대한 설명이 필요함
  
+* Data Visualization
+    * heatmap - feature correlation(!주의! 상관관계는 인과관계를 뜻하는 것이 아님)
+        - 간수치에 대한 특성이 양의 선형관계를 보여줄 줄 알았는데 거의 0에 가까움(= 거의 의미가 없다는 뜻)
+        - 간수치 특성중 GTP와 흡연 여부가 양의 션형관계를 보임
+        - 추가적으로 0에 근접한 Feature 제외(= '총콜레스테롤', '시도코드', '요단백')
+        -  + '가입자번호'도 제거할 필요가 있음(= 범주형이기 때문에 큰 의미가 없음)
+    * seaborn - 데이터 분포 확인
+        - 데이터는 남/여 거의 비슷한 분포를 가지고 Target의 분포 또한 일정함
+        - 남성이 많이 음주를 한다고 답한 반면 여성은 반대 양상을 보여줌(= 현재 데이터한에서)
+        - 체중과 신장의 경우 음주를 하는 경우 보통 큰 값을 가지는데 이는 남성이 주로 체격이 크기 때문에 이러한 양상을 띔
+        - 흡연(= smoke)을 하는 사람이 주로 음주도 하는 것으로 보임
+        - GTP의 경우 값이 많이 편향되어 있기 때문에 log변환을 통한 시각화(= 음주를 하는 사람이 대체로 값이 큰 값을 가진다고 볼 수 있음)
+        - 시력하고는 특별한 관계를 설명할 수 없음(= 크게 의미가 없는 것으로 보임)
+        - 헤모글로빈(= hemo)의 경우는 안마시는 사람보다 마시는 사람이 값이 높고 마시는 사람과 안마시는 사람의 값이 반대 양상을 보임
 
-### 2. Data Visualization
-* heatmap - feature correlation(!주의! 상관관계는 인과관계를 뜻하는 것이 아님)
-    - 간수치에 대한 특성이 양의 선형관계를 보여줄 줄 알았는데 거의 0에 가까움(= 거의 의미가 없다는 뜻)
-    - 간수치 특성중 GTP와 흡연 여부가 양의 션형관계를 보임
-    - 추가적으로 0에 근접한 Feature 제외(= '총콜레스테롤', '시도코드', '요단백')
-    -  + '가입자번호'도 제거할 필요가 있음(= 범주형이기 때문에 큰 의미가 없음)
-* seaborn - 데이터 분포 확인
-    - 데이터는 남/여 거의 비슷한 분포를 가지고 Target의 분포 또한 일정함
-    - 남성이 많이 음주를 한다고 답한 반면 여성은 반대 양상을 보여줌(= 현재 데이터한에서)
-    - 체중과 신장의 경우 음주를 하는 경우 보통 큰 값을 가지는데 이는 남성이 주로 체격이 크기 때문에 이러한 양상을 띔
-    - 흡연(= smoke)을 하는 사람이 주로 음주도 하는 것으로 보임
-    - GTP의 경우 값이 많이 편향되어 있기 때문에 log변환을 통한 시각화(= 음주를 하는 사람이 대체로 값이 큰 값을 가진다고 볼 수 있음)
-    - 시력하고는 특별한 관계를 설명할 수 없음(= 크게 의미가 없는 것으로 보임)
-    - 헤모글로빈(= hemo)의 경우는 안마시는 사람보다 마시는 사람이 값이 높고 마시는 사람과 안마시는 사람의 값이 반대 양상을 보임
-
-### 3. Data split
+### 2. Data split
 - split, stratify=target 적용
 - => 각각의 class 비율을 train / validation에 유지
 - => 한 쪽에 쏠려서 분배되는 것을 방지
 
 
-### 4. Modeling(Randomforestclassifier, XGBClassifier)
+### 3. Modeling(Randomforestclassifier, XGBClassifier)
 - Bagging, RandoForest
     - 질문을 여러가지로 나눠서 좋은 결과의 총합을 평균내어 예측
 
@@ -116,7 +116,7 @@ print('baseline_accuarcy_Score=', baseline)
 * f1_score - 실제 술을 마신다는 사람을 마신다고 예측한 것에(=재현율) 비중을 둘 수 있는 평가지표
 * auc_roc curve - Target을 잘 구분하는지를 판단하는 평가지표(= 주된 지표로 진행)
 
-### 5. Hyperparameter Tunning
+### 4. Hyperparameter Tunning
 * make_pipeline 임의값 설정 후 model fit, score 확인
 * 모델 성능 향상을 위한 Hyperparameter Tunning 진행
 ```python
@@ -174,7 +174,7 @@ clf_xg.fit(X_train, y_train);
 * SHAP, PDP를 활용하여 예측모델 설명(PDP => ppt, ipynb 확인)
 * SHAP, PDP = Target에 대한 각 특성들의 영향
 
-### 7. Predictive Model Explain
+### 5. Predictive Model Explain
 - ![ppt참고](https://github.com/kimmy-git/Health_data_project/blob/main/Health_data_project(ppt).pptx)
 
 #### 1) PermutationImportance
