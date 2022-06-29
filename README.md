@@ -6,14 +6,16 @@
 * 음주 여부는 잇몸의 상태 또는 수술 시 출혈량에도 영향을 끼칠 수 있음
 
 ### 문제 정의
-* 음주 여부(=Target)에 대해 어떤 특성이 영향을 끼치는지 데이터 통계 및 가시화를 통해 원인을 분석하고자 한다.
-* 음주 여부를 예측할 수 있는 모델을 구현하다.
+* 음주 여부(=Target)에 대해 어떤 특성이 영향을 끼치는지 데이터 통계 및 가시화를 통해 분석하고자 한다.
 
 ### 가설 설정
 * 알코올을 분해하는 간과 연관된 특성(GTP, AST, ALT)이 음주여부(=Target)에 가장 큰 영향을 미칠 것이다.
 
+### 목표
+* 음주 여부에 영향을 주는 특성을 확인하고 이를 예측할 수 있는 모델을 구현한다.
+
 ### Benefit
-* 평소 식습관, 정신 상태, 수면 습관 등 다양한 방면으로 데이터를 수집하고 모델 학습에 적용시킨다면 국민의 보건의료 수준과 삶의 질을 항샹시키는데 큰 기여를 할 수 있을 것
+* 평소 식습관, 정신 상태, 수면 습관 등 다양한 방면으로 데이터를 수집하고 음주 여부 판단뿐 아니라 특정 타겟을 예측 모델 학습에 적용시킨다면 국민의 보건의료 수준과 삶의 질을 항샹시키는데 큰 기여를 할 수 있을 것
 
 
 ## Requirements
@@ -39,60 +41,84 @@ if 'google.colab' in sys.modules:
 * shap
 * XGboost
 
+## Process
+- 과정 중에 필요했던 과정, 특이사항 작성
+### Data Preprocessing(EDA) -> Data Visualization -> Data split -> Modeling(+Hyperparameter Tunning) -> Metrics and Score -> Model Explain
+
 ## Data
 건강검진 데이터(국민보험공단)
 약 2만명의 데이터를 기반으로 분석진행
 [(features explain)](https://github.com/kimmy-git/Health_data_project/blob/main/features.txt)
-
-## Model
-이진분류문제 - 분류모델 사용(Randomforestclassifier, XGBClassifier)
-
-## Metrics and Score
-* accuracy
-* f1_score
-* auc_roc curve
-
-## Train Process
-### Data Preprocessing(EDA) -> Data Visualization -> (Train, val, Test) split -> 
-### Modeling(Hyperparameter Tunning) -> Metrics and Score -> Model Explain
+### alcohol == Target
 
 ### 1. Data Preprocessing
-* Data 일부만 추출(2만명)
-* 결측치가 많은 Features 제거 + 결측치 최빈값, 중간값으로 설정
-* BMI 지수 Feature 추가(EDA)
-* describe로 이상치 확인 => 상위 1% 제거
+- 사용한 데이터
+    - 10만개의 데이터 중 2만개의 데이터만 사용(= 빠른 구현을 위함)
+
+- 결측치 처리 및 필요 없는 Feature 삭제
+    - '치아우식증유무', '결손치유무', '치아마모증유무', '제3대구치(사랑니)이상',
+      '치석', '데이터공개일자', '기준년도'
+    - 치아의 상태이 음주 여부에 중요한 특성이 될 수 있겠지만 너무 많은 결측치이기 때문에 제외
+    - '요단백', 'LDL콜레스테롤' 최빈값, 중간값 적용(= 평균치는 이상치에 영향이 있기 때문에 중간값으로 지정)
+    - 이외의 결측치는 각 feature마다 많이 존재하지 않기 때문에 제외
+
+- 전처리
+    - Features 이름 변경
+    - BMI 지수 Feature 생성(= 체중 / ( (신장 / 100) ** 2 ))
+    - 시력 클래스 중 9.9 = 실명자 ==> 제외
+    - 이상치 처리(= 상위 0.1%) 
+    - => 이상치 제거 후 데이터의 구조 및 이상치 다시 확인 필요
+    - => 이상치 제거를 통해 어떤 부분을 학습 데이터로 사용할 건지에 대한 설명이 필요함
+ 
 
 ### 2. Data Visualization
+* heatmap - feature correlation(!주의 상관관계는 인과관계를 뜻하는 것이 아님)
+    - 간수치에 대한 특성이 양의 선형관계를 보여줄 줄 알았는데 거의 0에 가까움(= 거의 의미가 없다는 뜻)
+    - 간수치 특성중 GTP와 흡연 여부가 양의 션형관계를 보임
+    - 추가적으로 0에 근접한 Feature 제외(= '총콜레스테롤', '시도코드', '요단백')
+    -  + '가입자번호'도 제거할 필요가 있음(= 범주형이기 때문에 큰 의미가 없음)
 * seaborn - 데이터 분포 확인
-* heatmap - feature correlation 확인
+    - 데이터는 남/여 거의 비슷한 분포를 가지고 Target의 분포 또한 일정함
+    - 남성이 많이 음주를 한다고 답한 반면 여성은 반대 양상을 보여줌(= 현재 데이터한에서)
+    - 체중과 신장의 경우 음주를 하는 경우 보통 큰 값을 가지는데 이는 남성이 주로 체격이 크기 때문에 이러한 양상을 띔
+    - 흡연(= smoke)을 하는 사람이 주로 음주도 하는 것으로 보임
+    - GTP의 경우 값이 많이 편향되어 있기 때문에 log변환을 통한 시각화(= 음주를 하는 사람이 대체로 값이 큰 값을 가진다고 볼 수 있음)
+    - 시력하고는 특별한 관계를 설명할 수 없음(= 크게 의미가 없는 것으로 보임)
+    - 헤모글로빈(= hemo)의 경우는 안마시는 사람보다 마시는 사람이 값이 높고 마시는 사람과 안마시는 사람의 값이 반대 양상을 보임
 
-### 3. (Train, val, Test) split
-* Target = 'alcohol', 데이터 split
+### 3. Data split
+- split, stratify=target 적용
+- => 각각의 class 비율을 train / validation에 유지
+- => 한 쪽에 쏠려서 분배되는 것을 방지
+
 
 ### 4. Modeling(Randomforestclassifier, XGBClassifier)
-* make_pipeline 임의값 설정 후 model fit
+- Bagging, RandoForest
+    - 질문을 여러가지로 나눠서 좋은 결과의 총합을 평균내어 예측
+
+- Boosting, XGBoost
+    - 순차적으로 학습하고 오차를 본완해가며 정확도를 향상시키는 모델
+    
+### Baseline Model - 50%
 ```python
-RandomForest
-pipe_rf = make_pipeline(
-    RandomForestClassifier(n_jobs=-1, 
-                           max_depth= 2,
-                           min_samples_split=2,
-                           min_samples_leaf= 10,
-                           random_state=2)
-)
-
-XGboost
-pipe_xg = make_pipeline(
-    XGBClassifier(max_depth=2,
-                  random_state=10,
-                  min_samples_split=2,
-                  min_samples_leaf= 10,
-                  n_jobs=-1) 
-
-)
+# 전체 데이터 기준모델 설정
+major= df[target].mode()[0]
+pred= [major] * len(df[target])
+baseline= accuracy_score(df[target], pred)
+print('baseline_accuarcy_Score=', baseline)
 ```
+분류기준모델의 성능은 특성의 최빈값 비율로 설정
 
-### 5. 모델 성능 향상을 위한 Hyperparameter Tunning
+**why?** 예측모델이 사람보다 분류를 잘한다면 의미있는 모델이 구축 됐다고 볼 수 있다.
+
+## Metrics and Score
+* accuracy - 현재 분포 비율이 비슷하기때문에 Target값을 정확히 예측한 평가지표
+* f1_score - 실제 술을 마신다는 사람을 마신다고 예측한 것에(=재현율) 비중을 둘 수 있는 평가지표
+* auc_roc curve - Target을 잘 구분하는지를 판단하는 평가지표(= 주된 지표로 진행)
+
+### 5. Hyperparameter Tunning
+* make_pipeline 임의값 설정 후 model fit, score 확인
+* 모델 성능 향상을 위한 Hyperparameter Tunning 진행
 ```python
 RandomForest
 dists = {
@@ -143,25 +169,13 @@ clf_xg.fit(X_train, y_train);
 |roc_auc_score|77.2028|80.8852|81.2516|81.3268|
 |accuracy_score|69.9617|72.0663|72.5128|72.8316|
 
-### 6. XGboost Model 
-**Baseline Model** - 50%
-```python
-# 전체 데이터 기준모델 설정
-major= df[target].mode()[0]
-pred= [major] * len(df[target])
-baseline= accuracy_score(df[target], pred)
-print('baseline_accuarcy_Score=', baseline)
-```
-분류기준모델의 성능은 특성의 최빈값 비율로 설정
-
-**why?** 예측모델이 사람보다 분류를 잘한다면 의미있는 모델이 구축 됐다고 볼 수 있다.
-
 ### 성능이 제일 높은 XGboost 사용
 * Test data - PermutationImportance 순열중요도 확인
 * SHAP, PDP를 활용하여 예측모델 설명(PDP => ppt, ipynb 확인)
 * SHAP, PDP = Target에 대한 각 특성들의 영향
 
 ### 7. Predictive Model Explain
+- ![ppt참고](https://github.com/kimmy-git/Health_data_project/blob/main/Health_data_project(ppt).pptx)
 
 #### 1) PermutationImportance
 <p align="center"><img src="https://user-images.githubusercontent.com/83389640/144193904-183dc256-f477-43e0-b6d6-59aa9d985156.png"></p>
@@ -170,7 +184,6 @@ print('baseline_accuarcy_Score=', baseline)
 * 예측값과 실제값 비교 DataFrame 형성
 * 예측 확률 임계치 0.5 으로 설정( Right, Wrong 구분 )
 
-**index로 접근했기 때문에 number + 1 = 환자번호**
 #### 예측성공
 * True Positive - 술을 마시며 마신다고 예측 = 91%
 * True Negative - 술을 마시지 않으며 마시지 않는다고 예측 = 87%
@@ -183,10 +196,18 @@ print('baseline_accuarcy_Score=', baseline)
 
 ## Results
 * XGboost 82% 성능 모델 구현
-* 음주여부에 가장 크게 영향을 주는 것은 성별과 흡연여부, gtp 순으로 높은 것을 확인
+* **가설 : 음주는 간수치 특성이 가장 영향이 있을 것 
+    => 음주여부에 가장 크게 영향을 주는 것은 성별과 흡연여부, gtp 순으로 높은 것을 확인
+    => 충분한 데이터 분석과 전처리가 부족한 것으로 판단됨
 * ==> 해당 특성을 중점으로 피드백을 통해 생활 습관 
 
 ## Reviews
+* 가설은 틀렸나???
+- 데이터 구조를 먼저 파
+- 어려웠던 점 추가 기재, 해결하지 못한점,  
+- 분석관점보다는 모델 성능 중점으로 진행(= ~~ 어떤 관점에서 이루어져하는지를 느낌 )
+- 전처리 과정에서 왜 진행을 했는지에 대한 충분한 섦명이 부족(= 데이터 면밀히 분석할 필요성을 느낌)
+    - 이상치 처리를 통해서 어떤 데이터만 보겠다는 명확성 부족
 1. 더 많은 데이터를 사용했다면 더 성능이 좋은 모델을 구축할 수 있을까?
 2. 상위 1%이상치 제거, 전처리는 충분한가? 
 3. 82%의 성능은 충분한가?
