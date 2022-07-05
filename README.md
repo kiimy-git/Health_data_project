@@ -178,10 +178,13 @@ clf_xg.fit(X_train, y_train);
 * SHAP, PDP = Target에 대한 각 특성들의 영향
 
 ### 5. Predictive Model Explain
-- ![ppt참고](https://github.com/kimmy-git/Health_data_project/blob/main/Health_data_project(ppt).pptx)
 
 #### 1) PermutationImportance
+- 순열중요도를 계산하고 각 특성들이 타겟에 얼마나 기여하는지를 확인
+- age가 가장 높은 기여
+- gtp, alt, smoke 순으로 기여함을 
 <p align="center"><img src="https://user-images.githubusercontent.com/83389640/144193904-183dc256-f477-43e0-b6d6-59aa9d985156.png"></p>
+
 
 #### 2) SHAP Visualization
 * 예측값과 실제값 비교 DataFrame 형성
@@ -200,10 +203,11 @@ clf_xg.fit(X_train, y_train);
 ## Results
 * **XGboost 82% 성능 모델 구현**
 * **가설 : 음주는 간수치 특성이 가장 영향이 있을 것, 가설은 틀렸나???**
-![Process](https://user-images.githubusercontent.com/83389640/177256142-b29037f8-407c-454c-9663-b37b32c1d3cb.jpg)
-    * = 음주여부를 판단하는데 가장 크게 영향을 주는 것은 성별과 흡연여부, gtp
+![Process (1)](https://user-images.githubusercontent.com/83389640/177258062-4ef89597-221f-4fc4-a4c3-cb498a2aae80.jpg)
+    * = 음주여부를 판단하는데 가장 크게 영향을 주는 Features
+    * 간수치 특성이 타겟에 많은 영향이 있다는 것을 확인(= AST도 순열중요도에서 파악했을 때 기여함을 학인)
     * => 분석관점보다는 모델 성능에 중점으로 진행했기 때문에 데이터 구조 파악 및 분석 내용이 많이 부실함
-    * => 그렇기 때문에 특정 데이터에서 어떤 형태의 분포를 보이는지에 대한 설명력 부족, 이는 가설을 뒷받침하기 어려움
+        * age가 많은 기여를 했는데 해당 데이터의 주 나이대는 어느정도인지 파악하지 못 함(= 미성년자는 음주 X, 주로 나이대가 많은 사람일 것)
 
 * 결과적으로 모델 성능면에서는 좋다고 판단이 되나 분석면에서 설명력이 부족 => 결과에 대한 신뢰도가 떨어진다.
     * = 더 면밀한 데이터 분석이 필요함
