@@ -48,9 +48,6 @@ if 'google.colab' in sys.modules:
 - [Results](#results)
 - [Reviews](#reviews)
 
-#### <목차 생성 사이트>
-<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-
 ## Data
 건강검진 데이터(국민보험공단)
 약 2만명의 데이터를 기반으로 분석진행
