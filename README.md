@@ -97,11 +97,11 @@ if 'google.colab' in sys.modules:
 
 
 ### 3. Modeling(Randomforestclassifier, XGBClassifier)
-- Bagging, RandoForest
+- Bagging, RandomForest
     - 질문을 여러가지로 나눠서 좋은 결과의 총합을 평균내어 예측
 
 - Boosting, XGBoost
-    - 순차적으로 학습하고 오차를 본완해가며 정확도를 향상시키는 모델
+    - 순차적으로 학습하고 오차를 완해가며 정확도를 향상시키는 모델
     
 ### Baseline Model - 50%
 ```python
