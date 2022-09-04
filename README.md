@@ -115,7 +115,7 @@ print('baseline_accuarcy_Score=', baseline)
 
 **why?** 예측모델이 사람보다 분류를 잘한다면 의미있는 모델이 구축됐다고 볼 수 있기 때문이다.
 
-## Metrics and Score
+## Metrics and Score, Select Model
 * accuracy - 현재 분포 비율이 비슷하기때문에 Target값을 정확히 예측한 평가지표
 * f1_score - 실제 술을 마신다는 사람을 마신다고 예측한 것에(=재현율) 비중을 둘 수 있는 평가지표
 * auc_roc curve - Target을 잘 구분하는지를 판단하는 평가지표(= 주된 지표로 진행)
