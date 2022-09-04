@@ -183,7 +183,7 @@ clf_xg.fit(X_train, y_train);
 #### 1) PermutationImportance
 - 순열중요도를 계산하고 각 특성들이 타겟에 얼마나 기여하는지를 확인
 - age가 가장 높은 기여
-- gtp, alt, smoke 순으로 기여함을 
+- gtp, alt, smoke 순으로 기여함 
 <p align="center"><img src="https://user-images.githubusercontent.com/83389640/144193904-183dc256-f477-43e0-b6d6-59aa9d985156.png"></p>
 
 
